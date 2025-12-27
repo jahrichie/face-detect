@@ -1,7 +1,7 @@
 # Requires python 3.11 (not .12)
 
 
-#Run the following commands
+## Run the following commands for Ubuntu
 - python3 -m venv --system-site-packages face-detect
 - source face-detect/bin/activate
 - sudo apt update
@@ -12,3 +12,5 @@
 - pip install face-recognition
 
 
+## To Run On raspberry pi os
+-
