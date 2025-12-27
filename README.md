@@ -6,6 +6,7 @@
 - source face-detect/bin/activate
 - sudo apt update
 - sudo apt full-upgrade
+- From here you can either run the install-face-stuff.sh or the below commands
 - pip install opencv-python
 - pip install imutils
 - sudo apt install cmake
