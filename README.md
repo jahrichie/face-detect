@@ -1,7 +1,3 @@
-Thank you to original author I forked from:  https://core-electronics.com.au/guides/raspberry-pi/face-recognition-with-raspberry-pi-and-opencv/
-
-https://www.youtube.com/watch?v=3TUlJrRJUeM
-
 # Requires python 3.11 (not .12)
 
 
@@ -18,3 +14,8 @@ https://www.youtube.com/watch?v=3TUlJrRJUeM
 
 ## To Run On raspberry pi os
 - Run the files that have pi_os in them instead of core files
+
+### Attribution
+- Thank you to original author I forked from:  https://core-electronics.com.au/guides/raspberry-pi/face-recognition-with-raspberry-pi-and-opencv/
+- https://www.youtube.com/watch?v=3TUlJrRJUeM
+- Shoot them a follow!
