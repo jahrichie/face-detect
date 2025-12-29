@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import time
 import pickle
+import pyttsx3
 # from gpiozero import LED
 
 # Load pre-trained face encodings
@@ -13,7 +14,7 @@ known_face_encodings = data["encodings"]
 known_face_names = data["names"]
 
 # =========================
-# Initialize the camera (CHANGED)
+# Initialize the camera
 # =========================
 
 cap = cv2.VideoCapture(0)
@@ -28,8 +29,18 @@ time.sleep(2)
 # Initialize GPIO
 # output = LED(14)
 
+# =========================
+# Initialize TTS (ADDED)
+# =========================
+
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)
+
+last_spoken_time = 0
+SPEECH_COOLDOWN = 5  # seconds
+
 # Initialize our variables
-cv_scaler = 4  # this has to be a whole number
+cv_scaler = 2  # this has to be a whole number
 
 face_locations = []
 face_encodings = []
@@ -39,10 +50,10 @@ start_time = time.time()
 fps = 0
 
 # List of names that will trigger the GPIO pin
-authorized_names = ["john", "alice", "bob"]  # CASE-SENSITIVE
+authorized_names = ["Rich", "rich"]  # CASE-SENSITIVE
 
 def process_frame(frame):
-    global face_locations, face_encodings, face_names
+    global face_locations, face_encodings, face_names, last_spoken_time
     
     resized_frame = cv2.resize(frame, (0, 0), fx=(1/cv_scaler), fy=(1/cv_scaler))
     rgb_resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
@@ -68,11 +79,16 @@ def process_frame(frame):
         
         face_names.append(name)
     
+    current_time = time.time()
+    
     if authorized_face_detected:
-        # output.on()
         print("YES")
+        
+        if current_time - last_spoken_time > SPEECH_COOLDOWN:
+            engine.say("Authorized user detected")
+            engine.runAndWait()
+            last_spoken_time = current_time
     else:
-        # output.off()
         print("NO")
     
     return frame
@@ -88,7 +104,8 @@ def draw_results(frame):
         cv2.rectangle(frame, (left - 3, top - 35), (right + 3, top), (244, 42, 3), cv2.FILLED)
         
         font = cv2.FONT_HERSHEY_DUPLEX
-        cv2.putText(frame, name, (left + 6, top - 6), font, 1.0, (255, 255, 255), 1)
+        cv2.putText(frame, name, (left + 6, top - 6),
+                    font, 1.0, (255, 255, 255), 1)
         
         if name in authorized_names:
             cv2.putText(frame, "Authorized", (left + 6, bottom + 23),
@@ -133,4 +150,4 @@ while True:
 
 cv2.destroyAllWindows()
 cap.release()
-output.off()
+# output.off()
